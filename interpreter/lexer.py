@@ -1,6 +1,7 @@
 #Class
 from interpreter.errors import IllegalCharError
 from interpreter.tokens import Token
+from parser.parse import Parser
 
 #TOKEN CONSTANTS
 from interpreter.tokens import TOKEN_DIV, TOKEN_FLOAT, TOKEN_INT, TOKEN_LEFTPAREN, TOKEN_MINUS, TOKEN_MULTI, TOKEN_PLUS, TOKEN_RIGHTPAREN
@@ -81,5 +82,9 @@ class Lexer:
 def run(text):
     lexer = Lexer(text)
     tokens, error = lexer.make_tokens()
+    if error: return None, error
 
-    return tokens, error
+    parser = Parser(tokens)
+    ast = parser.parse()
+
+    return ast, None
