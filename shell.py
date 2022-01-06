@@ -1,5 +1,5 @@
 from interpreter.lexer import run
-
+    
 while True:
     text = input('waddle > ')
     result, error = run(text)
