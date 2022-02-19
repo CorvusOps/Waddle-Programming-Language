@@ -10,24 +10,39 @@ from interpreter.tokens import TOKEN_DIV, TOKEN_FLOAT, TOKEN_INT, TOKEN_LEFTPARE
 DIGITS = '012342546879'
 
 class Lexer:
-    """
+    """Construct string of words (source code) into TOKENS
+
+    This class do a very simple job : read the text version of the program, \
+        then break them to parts of separate tokens.
     
+    More class info soon....
+
+    Attributes:
+        text: a line/source code (e.g. 1 + 1, sample.wdl ) \
+            in shell that will be converted.
     """
 
     def __init__(self, text):
-        """constructor function(built-in class structure)"""
+        """Constructor function(built-in class structure)"""
         self.text = text
         self.pos = -1
         self.current_char = None
         self.advance()
 
     def advance(self):
-        """reads the current character"""
+        """Reads the current character"""
         self.pos += 1
         self.current_char = self.text[self.pos] if self.pos < len(self.text) else None
 
     def make_tokens(self):
-        """assign """
+        """Assign the input TEXT to respective TOKENS
+        
+        Returns:
+            List of TOKENS (mark)
+
+        Raises:
+            IllegarCharError: if the character is not recognized.
+        """
         mark = []
 
         while self.current_char != None:
@@ -61,7 +76,11 @@ class Lexer:
         return mark, None
 
     def make_number(self):
-        """identify number if int or float"""
+        """Identify if the DIGITS is int or float
+        
+        Returns:
+            Token of INT or FLOAT
+        """
         num_str = ''
         dot_count = 0
 
@@ -80,6 +99,18 @@ class Lexer:
             return Token(TOKEN_FLOAT, float(num_str))
 
 def run(text):
+    """Run the Lexer
+
+    Arguments:
+        text: inputed values in the console
+    
+    Returns:
+        The Token-ized value of the text.
+
+    Raises:
+        IllegalCharError: if the character is not recognized.
+
+    """
     lexer = Lexer(text)
     tokens, error = lexer.make_tokens()
     if error: return None, error
